@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: libraryflow
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    numInstances: 1
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: libraryflow-db
+          property: connectionString
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: VITE_STRIPE_PUBLIC_KEY
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: REPLIT_DOMAINS
+        value: libraryflow.onrender.com
+      - key: REPL_ID
+        generateValue: true
+      - key: ISSUER_URL
+        value: https://replit.com/oidc
+
+databases:
+  - name: libraryflow-db
+    databaseName: libraryflow
+    user: libraryflow_user
+    plan: free
